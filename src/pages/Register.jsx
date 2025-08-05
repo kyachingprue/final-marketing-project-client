@@ -4,9 +4,10 @@ import { RiUserShared2Line } from 'react-icons/ri';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import useAuth from '../hooks/useAuth';
+import registerImage from '../assets/images/crack-willow-tree--1-.jpg'
 
 const Register = () => {
-  const { userRegister, userProfileUpdate } = useAuth();
+  const { userRegister, googleSignIn, userProfileUpdate } = useAuth();
   const [textPassword, setTextPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -56,6 +57,35 @@ const Register = () => {
         console.log(error.message);
       })
   }
+
+  const handleGoogleRegister = () => {
+    googleSignIn()
+      .then(result => {
+        console.log("user google login", result.user);
+        if (result.user) {
+          // Google account profile update in the firebase
+          const profile = {
+            displayName: result.user?.displayName,
+            photoURL: result.user?.photoURL
+          }
+          userProfileUpdate(profile)
+            .then(() => {
+              console.log('user profile update successfully')
+              toast.success('Google signUp is successfully', {
+                autoClose: 2000,
+              })
+              navigate('/')
+            })
+            .catch(error => {
+              console.log(error.message);
+            })
+        }
+      })
+      .catch(error => {
+        console.log(error.message);
+      })
+  }
+
   return (
     <div>
       <article>
@@ -63,7 +93,7 @@ const Register = () => {
       </article>
       <div className="flex h-[700px] w-10/12 mt-22 mx-auto">
         <div className="w-full hidden md:inline-block">
-          <img className="h-full" src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/login/leftSideImage.png" alt="leftSideImage" />
+          <img className="h-full" src={registerImage} alt="leftSideImage" />
         </div>
 
         <div className="w-full flex flex-col items-center justify-center">
@@ -72,7 +102,7 @@ const Register = () => {
             <h2 className="text-4xl text-gray-900 font-medium">Sign Up</h2>
             <p className="text-sm text-gray-500/90 mt-3">Welcome back! Please sign up to continue</p>
 
-            <button type="button" className="w-full mt-8 bg-gray-500/10 flex items-center justify-center h-12 rounded-full">
+            <button onClick={handleGoogleRegister} type="button" className="w-full mt-8 bg-gray-500/10 flex items-center justify-center h-12 rounded-full">
               <img src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/login/googleLogo.svg" alt="googleLogo" />
             </button>
 

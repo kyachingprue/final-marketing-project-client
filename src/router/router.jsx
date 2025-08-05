@@ -6,6 +6,14 @@ import Contact from "../pages/Contact";
 import About from "../pages/About";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
+import PrivateRouter from "./PrivateRouter";
+import Dashboard from "../Dashboard/Dashboard";
+import MyProduct from "../Dashboard/User/MyProduct";
+import UserHome from "../Dashboard/User/UserHome";
+import Reservation from "../Dashboard/User/Reservation";
+import Payment from "../Dashboard/User/Payment";
+import AddReview from "../Dashboard/User/AddReview";
+import MyBooking from "../Dashboard/User/MyBooking";
 
 const router = createBrowserRouter([
   {
@@ -26,7 +34,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'about',
-        element: <About></About>
+        element: <PrivateRouter> <About></About></PrivateRouter>
       },
       {
         path: 'login',
@@ -38,6 +46,36 @@ const router = createBrowserRouter([
       }
     ]
   },
+  {
+    path: 'dashboard',
+    element: <Dashboard></Dashboard>,
+    children: [
+      {
+        path: '/dashboard/userHome',
+        element: <UserHome></UserHome>
+      },
+      {
+        path: '/dashboard/product',
+        element: <MyProduct></MyProduct>
+      },
+      {
+        path: '/dashboard/reservation',
+        element: <Reservation></Reservation>
+      },
+      {
+        path: '/dashboard/paymentHistory',
+        element: <Payment></Payment>
+      },
+      {
+        path: '/dashboard/addReview',
+        element: <AddReview></AddReview>
+      },
+      {
+        path: '/dashboard/myBooking',
+        element: <MyBooking></MyBooking>
+      }
+    ]
+  }
 ]);
 
 export default router;

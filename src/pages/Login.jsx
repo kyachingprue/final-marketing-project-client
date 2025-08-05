@@ -2,27 +2,56 @@ import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import { toast } from 'react-toastify';
+import loginImage from '../assets/images/Cherry-Tree-grow-care.jpg'
 
 const Login = () => {
-  const { userLogin } = useAuth();
-  // const location = useLocation();
+  const { userLogin, userProfileUpdate, googleSignIn } = useAuth();
+  const location = useLocation();
   const navigate = useNavigate();
+  const form = location.state?.from?.pathname || "/";
 
   const handleLogin = event => {
     event.preventDefault();
-    const form = event.target;
-    const email = form.email.value;
-    const password = form.password.value;
+    const formData = event.target;
+    const email = formData.email.value;
+    const password = formData.password.value;
     // user login with firebase
     userLogin(email, password)
       .then(result => {
-        console.log(result.user);
         if (result.user) {
           toast.success('user login successfully', {
             autoClose: 2000,
           });
-          navigate("/")
+          navigate(form, { replace: true });
         }
+      })
+  }
+
+  const handleGoogleLogin = () => {
+    googleSignIn()
+      .then(result => {
+        console.log("user google login", result.user);
+        if (result.user) {
+          // Google account profile update in the firebase
+          const profile = {
+            displayName: result.user?.displayName,
+            photoURL: result.user?.photoURL
+          }
+          userProfileUpdate(profile)
+            .then(() => {
+              console.log('user profile update successfully')
+              toast.success('Google sign in successfully', {
+                autoClose: 2000,
+              })
+              navigate('/')
+            })
+            .catch(error => {
+              console.log(error.message);
+            })
+        }
+      })
+      .catch(error => {
+        console.log(error.message);
       })
   }
   return (
@@ -32,7 +61,7 @@ const Login = () => {
       </article>
       <div className="flex h-[700px] w-10/12 mx-auto mt-24">
         <div className="w-full hidden md:inline-block">
-          <img className="h-full" src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/login/leftSideImage.png" alt="leftSideImage" />
+          <img className="h-full" src={loginImage} alt="leftSideImage" />
         </div>
 
         <div className="w-full flex flex-col items-center justify-center">
@@ -41,7 +70,7 @@ const Login = () => {
             <h2 className="text-4xl text-gray-900 font-medium">Sign in</h2>
             <p className="text-sm text-gray-500/90 mt-3">Welcome back! Please sign in to continue</p>
 
-            <button type="button" className="w-full mt-8 bg-gray-500/10 flex items-center justify-center h-12 rounded-full">
+            <button onClick={handleGoogleLogin} type="button" className="w-full mt-8 bg-gray-500/10 flex items-center justify-center h-12 rounded-full">
               <img src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/login/googleLogo.svg" alt="googleLogo" />
             </button>
 

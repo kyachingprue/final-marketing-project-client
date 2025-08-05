@@ -3,10 +3,13 @@ import { Link } from 'react-router-dom';
 import icon from '../assets/images/earth.png'
 import image from '../assets/images/letter-m (2).png'
 import useAuth from '../hooks/useAuth';
+import useProduct from '../hooks/useProduct';
+
 
 const Navbar = () => {
   const { users, userLogout } = useAuth();
   const [dropDownOpen, setDropDownOpen] = useState(false);
+  const [product] = useProduct();
 
   const toggleDropDown = () => {
     setDropDownOpen(prev => !prev);
@@ -48,7 +51,7 @@ const Navbar = () => {
 
           {/* Logo */}
           <a href="https://prebuiltui.com" className="flex items-center gap-2">
-            <img src={icon} alt="logo" className={`h-14 w-14 ${isScrolled && "invert opacity-80"}`} />
+            <img src={icon} alt="logo" className={`h-7 w-7 md:h-14 md:w-14 ${isScrolled && "invert opacity-80"}`} />
             <div className='flex items-center '>
               <img className='w-5 md:w-10' src={image} alt="M logo image" />
               <h3 className='text-sm md:text-2xl font-bold'>arketing</h3>
@@ -63,9 +66,16 @@ const Navbar = () => {
                 <div className={`${isScrolled ? "bg-gray-700" : "bg-white"} h-0.5 w-0 group-hover:w-full transition-all duration-300`} />
               </a>
             ))}
-            <button className={`border px-4 py-1 text-sm font-light rounded-full cursor-pointer ${isScrolled ? 'text-black' : 'text-white'} transition-all`}>
-              Dashboard
-            </button>
+            <div className='relative'>
+              <Link to="/dashboard">
+                <button className={`border px-4 py-1 text-sm font-light rounded-full cursor-pointer ${isScrolled ? 'text-black' : 'text-white'} transition-all`}>
+                  Dashboard
+                </button>
+                <div className="absolute -top-2 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-blue-500">
+                  <p className="text-xs text-white">{product?.length}</p>
+                </div>
+              </Link>
+            </div>
           </div>
 
           {/* Desktop Right */}
@@ -91,7 +101,7 @@ const Navbar = () => {
                         <Link to="/profile" onClick={() => setDropDownOpen(false)} className='block py-2 px-4 hover:bg-gray-300'>
                           Profile
                         </Link>
-                        <Link to="/Dashboard" onClick={() => setDropDownOpen(false)} className='block py-2 px-4 hover:bg-gray-300'>
+                        <Link to="/dashboard" onClick={() => setDropDownOpen(false)} className='block py-2 px-4 hover:bg-gray-300'>
                           Dashboard
                         </Link>
                         <button onClick={handleLogout} className='block py-2 px-4 hover:bg-gray-300'>
@@ -135,9 +145,16 @@ const Navbar = () => {
               </a>
             ))}
 
-            <button className="border px-4 py-1 text-sm font-light rounded-full cursor-pointer transition-all">
-              Dashboard
-            </button>
+            <div className='relative'>
+              <Link to="/dashboard">
+                <button className="border px-4 py-1 text-sm font-light rounded-full cursor-pointer transition-all">
+                  Dashboard
+                </button>
+                <div className="absolute -top-2 -right-1 flex h-3 w-3 items-center justify-center rounded-full bg-blue-500">
+                  <p className="text-xs text-white">{product?.length}</p>
+                </div>
+              </Link>
+            </div>
 
             <Link to="/login">
               <button className="bg-black text-white px-8 py-2.5 rounded-full transition-all duration-500">
