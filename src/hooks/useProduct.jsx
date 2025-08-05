@@ -7,7 +7,7 @@ const useProduct = () => {
   const axiosSecure = useAxiosSecure();
   const { users } = useAuth();
   // Tan stack query use in this project
-  const { data: product = [], refetch } = useQuery({
+  const { isLoading, data: product = [], refetch } = useQuery({
     queryKey: ['product', users?.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/carts?email=${users.email}`)
@@ -15,7 +15,7 @@ const useProduct = () => {
     }
   })
 
-  return [product, refetch]
+  return [product, isLoading, refetch]
 };
 
 export default useProduct;

@@ -67,7 +67,7 @@ const Navbar = () => {
               </a>
             ))}
             <div className='relative'>
-              <Link to="/dashboard">
+              <Link to="/dashboard/userHome">
                 <button className={`border px-4 py-1 text-sm font-light rounded-full cursor-pointer ${isScrolled ? 'text-black' : 'text-white'} transition-all`}>
                   Dashboard
                 </button>
@@ -101,7 +101,7 @@ const Navbar = () => {
                         <Link to="/profile" onClick={() => setDropDownOpen(false)} className='block py-2 px-4 hover:bg-gray-300'>
                           Profile
                         </Link>
-                        <Link to="/dashboard" onClick={() => setDropDownOpen(false)} className='block py-2 px-4 hover:bg-gray-300'>
+                        <Link to="/dashboard/userHome" onClick={() => setDropDownOpen(false)} className='block py-2 px-4 hover:bg-gray-300'>
                           Dashboard
                         </Link>
                         <button onClick={handleLogout} className='block py-2 px-4 hover:bg-gray-300'>
@@ -146,7 +146,7 @@ const Navbar = () => {
             ))}
 
             <div className='relative'>
-              <Link to="/dashboard">
+              <Link to="/dashboard/userHome">
                 <button className="border px-4 py-1 text-sm font-light rounded-full cursor-pointer transition-all">
                   Dashboard
                 </button>

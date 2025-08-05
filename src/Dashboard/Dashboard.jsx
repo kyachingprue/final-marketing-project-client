@@ -11,7 +11,7 @@ const Dashboard = () => {
   return (
     <div className='grid grid-cols-12'>
       {/* side navbar components */}
-      <div className='col-span-3 mx-auto w-full min-h-screen bg-slate-200'>
+      <div className='col-span-3 mx-auto w-full min-h-screen bg-gray-300'>
         <h2 className='text-3xl font-semibold text-blue-700 text-center border-b-2 mx-4 pt-4 pb-7'>Marketing</h2>
         <div className='pl-3 pt-3 md:pl-5 lg:pl-8'>
           <NavLink to="/dashboard/userHome" className="flex justify-start items-center gap-2">
@@ -43,7 +43,7 @@ const Dashboard = () => {
         </div>
       </div>
       {/* Main content pages */}
-      <div className='col-span-9 w-full pt-5 bg-white px-5'>
+      <div className='col-span-9 w-full pt-5 bg-slate-200 px-5'>
         <Outlet />
       </div>
     </div>
