@@ -3,9 +3,11 @@ import OrderTab from '../hooks/OrderTab';
 import useMenu from '../hooks/useMenu';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
+import useProduct from '../hooks/useProduct';
 
 const Products = () => {
   const [menu, loading] = useMenu();
+  const [, , refetch] = useProduct();
   if (loading) {
     return (
       <div className='flex justify-center items-center gap-2 w-full min-h-screen'>
@@ -44,22 +46,22 @@ const Products = () => {
         </TabList>
 
         <TabPanel>
-          <OrderTab products={phone}></OrderTab>
+          <OrderTab products={phone} refetch={refetch}></OrderTab>
         </TabPanel>
         <TabPanel>
-          <OrderTab products={watch}></OrderTab>
+          <OrderTab products={watch} refetch={refetch}></OrderTab>
         </TabPanel>
         <TabPanel>
-          <OrderTab products={computer}></OrderTab>
+          <OrderTab products={computer} refetch={refetch}></OrderTab>
         </TabPanel>
         <TabPanel>
-          <OrderTab products={car}></OrderTab>
+          <OrderTab products={car} refetch={refetch}></OrderTab>
         </TabPanel>
         <TabPanel>
-          <OrderTab products={laptop}></OrderTab>
+          <OrderTab products={laptop} refetch={refetch}></OrderTab>
         </TabPanel>
         <TabPanel>
-          <OrderTab products={bike}></OrderTab>
+          <OrderTab products={bike} refetch={refetch}></OrderTab>
         </TabPanel>
       </Tabs>
     </div>

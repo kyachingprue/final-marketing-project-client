@@ -6,10 +6,12 @@ import useAuth from '../hooks/useAuth';
 import useProduct from '../hooks/useProduct';
 
 
+
 const Navbar = () => {
   const { users, userLogout } = useAuth();
   const [dropDownOpen, setDropDownOpen] = useState(false);
   const [product] = useProduct();
+
 
   const toggleDropDown = () => {
     setDropDownOpen(prev => !prev);
@@ -90,11 +92,13 @@ const Navbar = () => {
                   <img
                     onClick={toggleDropDown}
                     src={users?.photoURL}
-                    className={`w-10 md:w-12 h-10 md:h-12 rounded-full cursor-pointer border-2 border-gray-400`}
+                    className={'w-10 md:w-12 h-10 md:h-12 rounded-full cursor-pointer object-cover border-2 border-gray-400'}
                     alt="user image" />
                   {
                     dropDownOpen && (
-                      <div className='absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md border z-50'>
+                      <div className='absolute right-0 mt-2 md:p-4 w-56 bg-white shadow-lg rounded-md border z-50'>
+                        <h2 className='text-sm md:text-xl text-center font-medium text-black pt-5 px-2 md:px-4'>{users?.displayName}</h2>
+                        <div className='divider'>OR</div>
                         <Link to="/" onClick={() => setDropDownOpen(false)} className='block py-2 px-4 hover:bg-gray-300'>
                           Home
                         </Link>

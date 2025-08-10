@@ -14,6 +14,12 @@ import Reservation from "../Dashboard/User/Reservation";
 import Payment from "../Dashboard/User/Payment";
 import AddReview from "../Dashboard/User/AddReview";
 import MyBooking from "../Dashboard/User/MyBooking";
+import AdminHome from "../Dashboard/Admin/AdminHome";
+import AddItems from "../Dashboard/Admin/AddItems";
+import Manage from "../Dashboard/Admin/Manage";
+import ManageBook from "../Dashboard/Admin/ManageBook";
+import AllUsers from "../Dashboard/Admin/AllUsers";
+import UserProfile from "../components/UserProfile";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +43,10 @@ const router = createBrowserRouter([
         element: <PrivateRouter> <About></About></PrivateRouter>
       },
       {
+        path: 'profile',
+        element: <UserProfile></UserProfile>
+      },
+      {
         path: 'login',
         element: <Login></Login>
       },
@@ -48,8 +58,31 @@ const router = createBrowserRouter([
   },
   {
     path: 'dashboard',
-    element: <Dashboard></Dashboard>,
+    element: <PrivateRouter><Dashboard></Dashboard></PrivateRouter>,
     children: [
+      // Admin Dashboard
+      {
+        path: '/dashboard/adminHome',
+        element: <AdminHome></AdminHome>
+      },
+      {
+        path: '/dashboard/addItems',
+        element: <AddItems></AddItems>
+      },
+      {
+        path: '/dashboard/manageItems',
+        element: <Manage></Manage>
+      },
+      {
+        path: '/dashboard/manageBookings',
+        element: <ManageBook></ManageBook>
+      },
+      {
+        path: '/dashboard/allUsers',
+        element: <AllUsers></AllUsers>
+      },
+
+      // User Dashboard 
       {
         path: '/dashboard/userHome',
         element: <UserHome></UserHome>

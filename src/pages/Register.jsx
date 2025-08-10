@@ -5,12 +5,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import useAuth from '../hooks/useAuth';
 import registerImage from '../assets/images/crack-willow-tree--1-.jpg'
+import useAxiosPublic from '../hooks/useAxiosPublic';
 
 const Register = () => {
   const { userRegister, googleSignIn, userProfileUpdate } = useAuth();
   const [textPassword, setTextPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const axiosPublic = useAxiosPublic();
 
   const handleRegister = (event) => {
     event.preventDefault();
@@ -40,11 +42,23 @@ const Register = () => {
           }
           userProfileUpdate(profile)
             .then(() => {
-              console.log('user profile update successfully')
-              toast.success('user register is successfully', {
-                autoClose: 2000,
-              })
-              navigate('/')
+              // User data send to the mongodb database server
+              const userInfo = {
+                name: name,
+                email: email
+              }
+              axiosPublic.post('/users', userInfo)
+                .then(res => {
+                  console.log(res.data);
+                  if (res.data.insertedId) {
+                    console.log('user profile update successfully')
+                    toast.success('user register is successfully', {
+                      autoClose: 2000,
+                    })
+                    navigate('/')
+                  }
+                })
+
             })
             .catch(error => {
               console.log(error.message);
@@ -62,24 +76,21 @@ const Register = () => {
     googleSignIn()
       .then(result => {
         console.log("user google login", result.user);
-        if (result.user) {
-          // Google account profile update in the firebase
-          const profile = {
-            displayName: result.user?.displayName,
-            photoURL: result.user?.photoURL
-          }
-          userProfileUpdate(profile)
-            .then(() => {
-              console.log('user profile update successfully')
-              toast.success('Google signUp is successfully', {
+        // Google account data send to the database
+        const userInfo = {
+          name: result.user?.displayName,
+          email: result.user?.email,
+          photoURL: result.user?.photoURL
+        }
+        axiosPublic.post('/users', userInfo)
+          .then(res => {
+            if (res.data.insertedId) {
+              toast.success("Google sign up successfully", {
                 autoClose: 2000,
               })
               navigate('/')
-            })
-            .catch(error => {
-              console.log(error.message);
-            })
-        }
+            }
+          })
       })
       .catch(error => {
         console.log(error.message);

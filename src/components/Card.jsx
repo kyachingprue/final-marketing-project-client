@@ -2,15 +2,13 @@ import { toast } from "react-toastify";
 import useAuth from "../hooks/useAuth";
 import { useLocation, useNavigate } from "react-router-dom";
 import useAxiosSecure from "../hooks/useAxiosSecure";
-import useProduct from "../hooks/useProduct";
 
-const Card = ({ product }) => {
+const Card = ({ product, refetch }) => {
   const { _id, title, description, price, image, category } = product;
   const { users } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const axiosSecure = useAxiosSecure();
-  const [, refetch] = useProduct();
 
   const handleAddToDashboard = () => {
     if (users && users?.email) {

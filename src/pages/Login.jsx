@@ -3,12 +3,14 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import { toast } from 'react-toastify';
 import loginImage from '../assets/images/Cherry-Tree-grow-care.jpg'
+import useAxiosPublic from '../hooks/useAxiosPublic';
 
 const Login = () => {
-  const { userLogin, userProfileUpdate, googleSignIn } = useAuth();
+  const { userLogin, googleSignIn } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-  const form = location.state?.from?.pathname || "/";
+  const axiosPublic = useAxiosPublic();
+  const from = location.state?.from?.pathname || "/";
 
   const handleLogin = event => {
     event.preventDefault();
@@ -22,7 +24,7 @@ const Login = () => {
           toast.success('user login successfully', {
             autoClose: 2000,
           });
-          navigate(form, { replace: true });
+          navigate(from, { replace: true });
         }
       })
   }
@@ -31,24 +33,21 @@ const Login = () => {
     googleSignIn()
       .then(result => {
         console.log("user google login", result.user);
-        if (result.user) {
-          // Google account profile update in the firebase
-          const profile = {
-            displayName: result.user?.displayName,
-            photoURL: result.user?.photoURL
-          }
-          userProfileUpdate(profile)
-            .then(() => {
-              console.log('user profile update successfully')
-              toast.success('Google sign in successfully', {
+        // Google account data send to the database
+        const userInfo = {
+          name: result.user?.displayName,
+          email: result.user?.email,
+          photoURL: result.user?.photoURL
+        }
+        axiosPublic.post('/users', userInfo)
+          .then(res => {
+            if (res.data) {
+              toast.success("Google sign up successfully", {
                 autoClose: 2000,
               })
-              navigate('/')
-            })
-            .catch(error => {
-              console.log(error.message);
-            })
-        }
+              navigate(from, { replace: true });
+            }
+          })
       })
       .catch(error => {
         console.log(error.message);
